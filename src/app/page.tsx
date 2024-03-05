@@ -5,11 +5,13 @@ import Switcher from "../components/Switcher";
 import {
   getCurrencies,
   getCurrentRates,
+  getCurrentSymbol,
   getRateCurrency,
 } from "../services/exchangeRate";
 
 export default function Home() {
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  const [selectedSymbol, setSelectedSymbol] = useState<string>("$");
   const [rates, setRates] = useState([]);
   const currencyChange = (isChecked: boolean) => {
     console.log("test", isChecked);
@@ -25,9 +27,23 @@ export default function Home() {
     const res = await getRateCurrency();
     setRates(res.rates);
   };
+
+  const updateSymbol = async () => {
+    const symbol = getCurrentSymbol(selectedCurrency);
+    setSelectedSymbol(symbol);
+  };
+
+  const updateValueByRate = (value: string) => {
+    //to do implement updateVal
+  };
+
   useEffect(() => {
-    console.log(selectedCurrency);
     getRateCurrencyByUSD();
+  }, []);
+
+  useEffect(() => {
+    console.log(rates);
+    updateSymbol();
   }, [selectedCurrency]);
 
   return (
@@ -87,7 +103,7 @@ export default function Home() {
             </div>
             <div className="price">
               <div className="value grid-spacing">
-                <span className="symbol">$</span>
+                <span className="symbol">{selectedSymbol}</span>
                 <span className="pre-decimal">42</span>
                 <span className="after-decimal"></span>
               </div>
@@ -113,7 +129,7 @@ export default function Home() {
           <div className="grid special">
             <div className="special-tag">Special Price</div>
             <div className="discount">
-              <span>$</span>
+              <span>{selectedSymbol}</span>
               <span>27</span>
             </div>
             <div className="title grid-spacing">
@@ -122,7 +138,7 @@ export default function Home() {
             </div>
             <div className="price ">
               <div className="value  grid-spacing">
-                <span className="symbol">$</span>
+                <span className="symbol">{selectedSymbol}</span>
                 <span className="pre-decimal">13</span>
                 <span className="after-decimal">.25</span>
               </div>

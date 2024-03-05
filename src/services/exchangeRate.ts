@@ -32,3 +32,8 @@ export const getCurrentRates = () => {
   ];
   return rates;
 };
+
+export const getCurrentSymbol = (name: string) => {
+  const currency = getCurrentRates().find((rate) => rate.name === name);
+  return currency ? currency.symbol : "";
+};
