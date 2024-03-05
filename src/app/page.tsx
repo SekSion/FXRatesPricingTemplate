@@ -1,94 +1,176 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import { ChangeEventHandler, useEffect, useState } from "react";
+import Switcher from "../components/Switcher";
+import {
+  getCurrencies,
+  getCurrentRates,
+  getRateCurrency,
+} from "../services/exchangeRate";
 
 export default function Home() {
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  const [rates, setRates] = useState([]);
+  const currencyChange = (isChecked: boolean) => {
+    console.log("test", isChecked);
+  };
+
+  const handleCurrencyChange: ChangeEventHandler<HTMLSelectElement> = (ev) => {
+    console.log("test", ev.target.value);
+    const val = ev.target.value;
+    setSelectedCurrency(val);
+  };
+
+  const getRateCurrencyByUSD = async () => {
+    const res = await getRateCurrency();
+    setRates(res.rates);
+  };
+  useEffect(() => {
+    console.log(selectedCurrency);
+    getRateCurrencyByUSD();
+  }, [selectedCurrency]);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main>
+      <div className="wrapper pricing-section">
+        {/* Pricing Selection Section */}
+        <div className="pricing-change-section">
+          <Switcher
+            label="Save with Yearly"
+            size="small"
+            onChange={currencyChange}
+          ></Switcher>
+          <select
+            id="currency-selector"
+            name="currency-selector"
+            value={selectedCurrency}
+            onChange={handleCurrencyChange}
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            {getCurrentRates().map((rate) => (
+              <option key={rate.name} value={rate.name}>
+                {rate.symbol} {rate.name}
+              </option>
+            ))}
+          </select>
         </div>
-      </div>
+        <div className="pricing-grid">
+          <div className="grid">
+            <div className="title grid-spacing">
+              <h2>Basic</h2>
+              <p>Limited Access</p>
+            </div>
+            <div className="price">
+              <div className="value  grid-spacing">
+                <span>Free</span>
+              </div>
+              <div className="type">
+                <span className="">/month </span>
+                <span className="">billed annually</span>
+              </div>
+            </div>
+            <div className="action grid-spacing">
+              <a className="action-link">
+                <span>Get Started</span>
+              </a>
+            </div>
+            <ul>
+              <li>Every first chapter free</li>
+              <li>Free professional profile and job board access</li>
+              <li>Upgrade to earn certificates</li>
+            </ul>
+          </div>
+          <div className="grid highlighted">
+            <div className="special-tag">Most Popular</div>
+            <div className="title grid-spacing">
+              <h2>Premium</h2>
+              <p>For Individuals</p>
+            </div>
+            <div className="price">
+              <div className="value grid-spacing">
+                <span className="symbol">$</span>
+                <span className="pre-decimal">42</span>
+                <span className="after-decimal"></span>
+              </div>
+              <div className="type ">
+                <span className="">/month</span>
+                <span className="">billed annually</span>
+              </div>
+            </div>
+            <div className="action grid-spacing">
+              <a className="action-link highlight">
+                <span>Subscribe Now</span>
+              </a>
+            </div>
+            <ul>
+              <li>Access our full content library</li>
+              <li>All certificates and projects</li>
+              <li>Go from zero to job ready</li>
+              <li>Our top Python, SQL, Tableau, Power BI and R programs</li>
+              <li>More ways to learn to code</li>
+            </ul>
+          </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+          <div className="grid special">
+            <div className="special-tag">Special Price</div>
+            <div className="discount">
+              <span>$</span>
+              <span>27</span>
+            </div>
+            <div className="title grid-spacing">
+              <h2>Teams</h2>
+              <p>For teams of 2 and up</p>
+            </div>
+            <div className="price ">
+              <div className="value  grid-spacing">
+                <span className="symbol">$</span>
+                <span className="pre-decimal">13</span>
+                <span className="after-decimal">.25</span>
+              </div>
+              <div className="type ">
+                <span className="">per user /month </span>
+                <span className="">billed annually</span>
+              </div>
+            </div>
+            <div className="action grid-spacing">
+              <a className="action-link">
+                <span>Set Up a Team</span>
+              </a>
+            </div>
+            <p className="grid-spacing">Everything in Premium plus:</p>
+            <ul>
+              <li>Manage your group</li>
+              <li>View learning activity and track progress</li>
+              <li>License management tools</li>
+            </ul>
+            <a className="grid-spacing" href="#">
+              <span>Free Teams plan for educators</span>
+            </a>
+          </div>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+          <div className="grid enterprise">
+            <div className="title grid-spacing">
+              <h2>Enterprise</h2>
+              <p>Bespoke Solutions</p>
+            </div>
+            <div className="price ">
+              <div className="value  grid-spacing">
+                <span>Contact sales for pricing</span>
+              </div>
+            </div>
+            <div className="action  grid-spacing">
+              <a className="action-link">
+                <span>Request a Demo</span>
+              </a>
+            </div>
+            <p className="grid-spacing">Everything in Teams plus:</p>
+            <ul>
+              <li>Personalized and adaptive learning paths for employees</li>
+              <li>Advanced analytics and reporting integrations</li>
+              <li>Single Sign-On (SSO) through Okta, Auth0, Azure and more</li>
+              <li>LMS/LXP integrations</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </main>
   );

@@ -1,0 +1,12 @@
+body {
+    color:white;
+    background-color: #05192d;
+    padding:10px;
+    .wrapper {
+        max-width: 1172px;
+        margin: 0 auto;
+    }
+}
+
+@import 'page/main.scss';
+@import 'components/main.scss';
