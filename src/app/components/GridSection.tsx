@@ -8,20 +8,21 @@ export default function GridSection() {
   const { selectedCurrency, currentRates, selectedSymbol, currencyChange } =
     useContext(PricingContext);
 
-  const updateValueByRate = (value: string, decimals: number = 0) => {
+  const updateValueByRate = (value: string) => {
     const parsedValue = parseFloat(value);
     if (!isNaN(parsedValue)) {
       const result = currentRates[selectedCurrency] * parsedValue;
-      return String(result.toFixed(decimals)); // Ensure result is formatted with 2 decimals
+      const precision = String(result).includes(".") ? 2 : 0;
+      const formattedResult = result.toFixed(precision);
+      const cleanedResult = formattedResult.replace(/\.00$/, "");
+      return cleanedResult;
     } else {
-      return "NaN"; // Handle invalid input
+      return "NaN";
     }
   };
 
   const showValue = (value: string) => {
-    const hasDecimal = value.includes(".");
-    const precision = hasDecimal ? 2 : 0;
-    const val = updateValueByRate(value, precision);
+    const val = updateValueByRate(value);
     const [preDecimal, afterDecimal] = val.split(".");
     return (
       <div className="value">

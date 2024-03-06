@@ -1,9 +1,12 @@
 "use client";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, {
   createContext,
   useState,
   Dispatch,
   SetStateAction,
+  useEffect,
+  useCallback,
 } from "react";
 
 type ContextValueType = {
@@ -30,11 +33,16 @@ const PricingContext = createContext<ContextValueType>({
 
 // PricingProviders component
 export function PricingProviders({ children, rates }: any) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const period = searchParams.get("period");
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const [selectedSymbol, setSelectedSymbol] = useState("$");
   const [currentRates, setRates] = useState<{ [key: string]: number }>(rates);
-  const [currencyChange, setCurrencyChange] = useState<boolean>(false);
-
+  const [currencyChange, setCurrencyChange] = useState<boolean>(
+    period == "yearly" ?? false
+  );
   // Value to be provided to the context
   const contextValue: ContextValueType = {
     selectedCurrency,
@@ -46,6 +54,24 @@ export function PricingProviders({ children, rates }: any) {
     setRates,
     setCurrencyChange,
   };
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
+  useEffect(() => {
+    router.push(
+      pathname +
+        "?" +
+        createQueryString("period", currencyChange ? "yearly" : "monthly")
+    );
+  }, [currencyChange]);
 
   return (
     <PricingContext.Provider value={contextValue}>
