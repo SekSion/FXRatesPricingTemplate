@@ -19,7 +19,9 @@ export default function GridSection() {
   };
 
   const showValue = (value: string) => {
-    const val = updateValueByRate(value, 2);
+    const hasDecimal = value.includes(".");
+    const precision = hasDecimal ? 2 : 0;
+    const val = updateValueByRate(value, precision);
     const [preDecimal, afterDecimal] = val.split(".");
     return (
       <div className="value">
@@ -79,7 +81,10 @@ export default function GridSection() {
         </ul>
       </div>
       <div className="grid highlighted">
-        <div className="special-tag">Most Popular</div>
+        <div className="special-tag">
+          {" "}
+          {currencyChange ? "Special Price" : "Most Popular"}
+        </div>
         {currencyChange && (
           <div className="discount">
             <span>{selectedSymbol}</span>
@@ -93,7 +98,7 @@ export default function GridSection() {
         </div>
         <div className="price">
           <div className="value">
-            {currencyChange ? showValue("13.25") : showValue("42.22")}
+            {currencyChange ? showValue("13.25") : showValue("42")}
           </div>
           <div className="type ">
             <span className="">/month</span>
