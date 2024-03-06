@@ -9,8 +9,7 @@ export const getCurrencies = async () => {
 };
 
 export const getRateCurrency = async () => {
-  const url = `https://openexchangerates.org/api/latest.json?app_id=&base=USD`;
-
+  const url = `https://openexchangerates.org/api/latest.json?app_id=${process.env.NEXT_PUBLIC_API}&base=USD`;
   const res = await fetch(url);
 
   if (!res.ok) {

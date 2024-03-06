@@ -39,6 +39,7 @@
                 border-radius: 4px;
                 border-bottom-left-radius: 0;
                 border-bottom-right-radius: 0;
+                z-index: 10;
                 @media screen and (max-width: 1200px) {
                     margin-top: 0;
                     order:0;
@@ -138,6 +139,8 @@
                 margin-bottom:20px;
                 padding-top: 10px;
                 padding-bottom: 10px;
+                padding-left:22px;
+                padding-right:22px;
                .value {
                 font-size: 2rem;
                 font-weight: bold;
@@ -155,6 +158,7 @@
                 display:flex;
                 flex-direction: column;
                 font-size: 0.875rem;
+                padding-left:20px;
                }
             }
             .grid-spacing {
@@ -197,6 +201,7 @@
             right: 20px;
             font-size: 1.2rem;
             color: #626D79;
+            top:10px;
             &::after {
                 border-color: inherit;
                 border-top: 2.5px solid #FF5400;
@@ -209,6 +214,41 @@
                 -moz-transform: rotate(-15.73deg);
                 -ms-transform: rotate(-15.73deg);
                 transform: rotate(-15.73deg);
+            }
+          }
+
+          ul {
+            box-sizing: border-box;
+            margin: 0;
+            min-width: 0;
+            margin-top: 0;
+            padding: 10px 22px;
+            list-style: none;
+            li {
+                display: flex;
+                font-size: 0.875rem;
+                margin-top: 8px;
+                align-items: flex-start;
+                box-sizing: border-box;
+                margin: 0;
+                min-width: 0;
+                color: #05192D;
+                line-height: 2;
+                svg {
+                    margin-right: 8px;
+                    margin-top: 2px;
+                    flex-shrink: 0;
+                }
+            }
+          }
+          .custom-link {
+            text-decoration: none;
+            color:#0075AD;
+            font-weight: 700;
+            font-size: 0.875rem;
+            &:hover {
+                text-decoration: underline;
+                text-decoration-color: black;
             }
           }
         }

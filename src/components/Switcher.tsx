@@ -6,6 +6,7 @@ interface IProps {
   label?: string;
   labelPosition?: "left" | "right";
   onChange?: (isChecked: boolean) => void;
+  value: boolean;
 }
 
 const Switcher = ({
@@ -13,8 +14,9 @@ const Switcher = ({
   label = "",
   labelPosition = "left",
   onChange,
+  value,
 }: IProps) => {
-  const [isToggled, setIsToggled] = useState(false);
+  const [isToggled, setIsToggled] = useState(value);
 
   const toggleSwitch = () => {
     const newValue = !isToggled;
